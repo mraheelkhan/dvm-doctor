@@ -13,9 +13,10 @@ class ApiService {
 
   final String baseUrl =
       // 'http://192.168.10.17/Laravel-Flutter-Course-API/public/api/';
-      'http://dbfc-111-119-188-23.ngrok.io/api/';
+      'http://62f2-111-119-177-24.ngrok.io/api/';
 
-  Future<List<Owner>> fetchOwners() async {
+  Future<Owner> fetchOwners() async {
+    Owner _owner;
     http.Response response = await http.get(
       Uri.parse(baseUrl + 'owners'),
       headers: {
@@ -24,10 +25,15 @@ class ApiService {
         HttpHeaders.authorizationHeader: 'Bearer $token'
       },
     );
+    // final jsonResponse = jsonDecode(response.body);
+    var owner = jsonDecode(response.body);
+    // Owner owner = new Owner.fromJson(jsonResponse);
 
-    List owners = jsonDecode(response.body);
-    print(owners);
-    return owners.map((owner) => Owner.fromJson(owner)).toList();
+    _owner = Owner.fromJson(owner);
+    return _owner;
+    // return owner.fromJson(owner);
+    // return ;
+    // return owner.map<Owner>((json) => Owner.fromMap(json));
   }
 
   Future<Owner> addOwner(String name) async {
@@ -47,40 +53,40 @@ class ApiService {
     return Owner.fromJson(jsonDecode(response.body));
   }
 
-  Future<Owner> updateOwner(Owner owner) async {
-    String uri = baseUrl + 'owners/' + owner.id.toString();
+  // Future<Owner> updateOwner(Owner owner) async {
+  //   String uri = baseUrl + 'owners/' + owner.id.toString();
 
-    http.Response response = await http.put(Uri.parse(uri),
-        headers: {
-          HttpHeaders.contentTypeHeader: 'application/json',
-          HttpHeaders.acceptHeader: 'application/json',
-          HttpHeaders.authorizationHeader: 'Bearer $token'
-        },
-        body: jsonEncode({'name': owner.name}));
+  //   http.Response response = await http.put(Uri.parse(uri),
+  //       headers: {
+  //         HttpHeaders.contentTypeHeader: 'application/json',
+  //         HttpHeaders.acceptHeader: 'application/json',
+  //         HttpHeaders.authorizationHeader: 'Bearer $token'
+  //       },
+  //       body: jsonEncode({'name': owner.name}));
 
-    if (response.statusCode != 200) {
-      throw Exception('Something went wrong! Error code: ' +
-          response.statusCode.toString());
-    }
-    return Owner.fromJson(jsonDecode(response.body));
-  }
+  //   if (response.statusCode != 200) {
+  //     throw Exception('Something went wrong! Error code: ' +
+  //         response.statusCode.toString());
+  //   }
+  //   return Owner.fromJson(jsonDecode(response.body));
+  // }
 
-  Future<void> deleteOwner(int id) async {
-    String uri = baseUrl + 'owners/' + id.toString();
+  // Future<void> deleteOwner(int id) async {
+  //   String uri = baseUrl + 'owners/' + id.toString();
 
-    http.Response response = await http.delete(
-      Uri.parse(uri),
-      headers: {
-        HttpHeaders.contentTypeHeader: 'application/json',
-        HttpHeaders.acceptHeader: 'application/json',
-        HttpHeaders.authorizationHeader: 'Bearer $token'
-      },
-    );
-    if (response.statusCode != 204) {
-      throw Exception('Something went wrong while deleting! Error code: ' +
-          response.statusCode.toString());
-    }
-  }
+  //   http.Response response = await http.delete(
+  //     Uri.parse(uri),
+  //     headers: {
+  //       HttpHeaders.contentTypeHeader: 'application/json',
+  //       HttpHeaders.acceptHeader: 'application/json',
+  //       HttpHeaders.authorizationHeader: 'Bearer $token'
+  //     },
+  //   );
+  //   if (response.statusCode != 204) {
+  //     throw Exception('Something went wrong while deleting! Error code: ' +
+  //         response.statusCode.toString());
+  //   }
+  // }
 
   Future<String> register(String name, String email, String password,
       String confirmPassword, String deviceName) async {

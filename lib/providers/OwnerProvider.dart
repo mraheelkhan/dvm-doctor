@@ -4,8 +4,7 @@ import 'package:dvm_doctor/providers/AuthProvider.dart';
 import 'package:dvm_doctor/services/Api.dart';
 
 class OwnerProvider extends ChangeNotifier {
-  List<Owner> owners = [];
-
+  Owner owners = Owner();
   late ApiService apiService;
   late AuthProvider authProvider;
 
@@ -21,38 +20,38 @@ class OwnerProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future addOwner(String name) async {
-    try {
-      Owner addOwner = await apiService.addOwner(name);
-      owners.add(addOwner);
+  // Future addOwner(String name) async {
+  //   try {
+  //     Owner addOwner = await apiService.addOwner(name);
+  //     owners.add(addOwner);
 
-      notifyListeners();
-    } catch (Exception) {
-      print(Exception);
-    }
-  }
+  //     notifyListeners();
+  //   } catch (Exception) {
+  //     print(Exception);
+  //   }
+  // }
 
-  Future updateOwner(Owner owner) async {
-    try {
-      Owner updatedOwner = await apiService.updateOwner(owner);
-      int index = owners.indexOf(owner);
+  // Future updateOwner(Owner owner) async {
+  //   try {
+  //     Owner updatedOwner = await apiService.updateOwner(owner);
+  //     int index = owners.indexOf(owner);
 
-      owners[index] = updatedOwner;
+  //     owners[index] = updatedOwner;
 
-      notifyListeners();
-    } catch (Exception) {
-      print(Exception);
-    }
-  }
+  //     notifyListeners();
+  //   } catch (Exception) {
+  //     print(Exception);
+  //   }
+  // }
 
-  Future deleteOwner(Owner owner) async {
-    try {
-      await apiService.deleteOwner(owner.id);
-      owners.remove(owner);
+  // Future deleteOwner(Owner owner) async {
+  //   try {
+  //     await apiService.deleteOwner(owner.id);
+  //     owners.remove(owner);
 
-      notifyListeners();
-    } catch (Exception) {
-      print(Exception);
-    }
-  }
+  //     notifyListeners();
+  //   } catch (Exception) {
+  //     print(Exception);
+  //   }
+  // }
 }

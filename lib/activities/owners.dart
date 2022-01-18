@@ -15,79 +15,68 @@ class _OwnersState extends State<Owners> {
   Widget build(BuildContext context) {
     final provider = Provider.of<OwnerProvider>(context);
 
-    List<Owner> Owners = provider.owners;
+    Owner Owners = provider.owners;
     return Scaffold(
       appBar: AppBar(
         title: Text('Owners'),
       ),
       body: Container(
-          color: Theme.of(context).primaryColorDark,
+          // color: Theme.of(context).primaryColorDark,
           child: Center(
-            child: ListView.builder(
-                itemCount: Owners.length,
+        child: () {
+          if (Owners.data != null) {
+            return ListView.builder(
+                itemCount: Owners.data?.length ?? 0,
                 itemBuilder: (BuildContext context, int index) {
-                  Owner owner = Owners[index];
+                  Data owner = Owners.data![index];
                   return ListTile(
                       title: Text(
                         owner.name,
-                        style: TextStyle(color: Colors.white),
+                        style: TextStyle(color: Colors.black),
                       ),
                       trailing: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           IconButton(
                               onPressed: () {
-                                showModalBottomSheet(
-                                    context: context,
-                                    isScrollControlled: true,
-                                    builder: (context) {
-                                      return OwnerEdit(
-                                          owner, provider.updateOwner);
-                                    });
+                                // showModalBottomSheet(
+                                //     context: context,
+                                //     isScrollControlled: true,
+                                //     builder: (context) {
+                                //       return OwnerEdit(
+                                //           owner, provider.updateOwner);
+                                //     });
                               },
                               icon: Icon(
                                 Icons.edit,
-                                color: Colors.white,
+                                color: Colors.black,
                                 size: 24.0,
                               )),
                           IconButton(
-                              onPressed: () {
-                                showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return AlertDialog(
-                                        title: Text('Confirmation'),
-                                        content: Text('Do you want to delete?'),
-                                        actions: [
-                                          TextButton(
-                                              onPressed: () => deleteCategory(
-                                                  provider.deleteOwner, owner),
-                                              child: Text('Delete')),
-                                          TextButton(
-                                              onPressed: () =>
-                                                  Navigator.pop(context),
-                                              child: Text('Cancel')),
-                                        ],
-                                      );
-                                    });
-                              },
+                              onPressed: null,
                               icon: Icon(
                                 Icons.delete,
-                                color: Colors.white,
+                                color: Colors.red,
                                 size: 24.0,
                               ))
                         ],
                       ));
-                }),
-          )),
+                });
+          } else {
+            return CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
+            );
+          }
+        }(),
+      )),
       floatingActionButton: new FloatingActionButton(
           onPressed: () {
-            showModalBottomSheet(
-                context: context,
-                isScrollControlled: true,
-                builder: (context) {
-                  return OwnerAdd(provider.addOwner);
-                });
+            // showModalBottomSheet(
+            //     context: context,
+            //     isScrollControlled: true,
+            //     builder: (context) {
+            //       return OwnerAdd(provider.addOwner);
+            //     });
           },
           child: Icon(Icons.add)),
     );
