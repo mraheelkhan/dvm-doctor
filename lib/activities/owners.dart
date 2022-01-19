@@ -2,7 +2,7 @@ import 'package:dvm_doctor/widgets/OwnerAdd.dart';
 import 'package:dvm_doctor/widgets/OwnerEdit.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
-import 'package:dvm_doctor/models/Owner.dart';
+import 'package:dvm_doctor/models/OwnerResponse.dart';
 import 'package:dvm_doctor/providers/OwnerProvider.dart';
 
 class Owners extends StatefulWidget {
@@ -15,7 +15,7 @@ class _OwnersState extends State<Owners> {
   Widget build(BuildContext context) {
     final provider = Provider.of<OwnerProvider>(context);
 
-    Owner Owners = provider.owners;
+    OwnerResponse Owners = provider.owners;
     return Scaffold(
       appBar: AppBar(
         title: Text('Owners'),
@@ -28,7 +28,7 @@ class _OwnersState extends State<Owners> {
             return ListView.builder(
                 itemCount: Owners.data?.length ?? 0,
                 itemBuilder: (BuildContext context, int index) {
-                  Data owner = Owners.data![index];
+                  OwnerData owner = Owners.data![index];
                   return ListTile(
                       title: Text(
                         owner.name,
@@ -39,13 +39,13 @@ class _OwnersState extends State<Owners> {
                         children: [
                           IconButton(
                               onPressed: () {
-                                // showModalBottomSheet(
-                                //     context: context,
-                                //     isScrollControlled: true,
-                                //     builder: (context) {
-                                //       return OwnerEdit(
-                                //           owner, provider.updateOwner);
-                                //     });
+                                showModalBottomSheet(
+                                    context: context,
+                                    isScrollControlled: true,
+                                    builder: (context) {
+                                      return OwnerEdit(
+                                          owner, provider.updateOwner);
+                                    });
                               },
                               icon: Icon(
                                 Icons.edit,
@@ -82,7 +82,7 @@ class _OwnersState extends State<Owners> {
     );
   }
 
-  Future deleteCategory(Function callback, Owner owner) async {
+  Future deleteCategory(Function callback, OwnerResponse owner) async {
     await callback(owner);
     Navigator.pop(context);
   }

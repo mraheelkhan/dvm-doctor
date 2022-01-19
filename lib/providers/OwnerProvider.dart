@@ -1,10 +1,10 @@
-import 'package:dvm_doctor/models/Owner.dart';
+import 'package:dvm_doctor/models/OwnerResponse.dart';
 import 'package:flutter/material.dart';
 import 'package:dvm_doctor/providers/AuthProvider.dart';
 import 'package:dvm_doctor/services/Api.dart';
 
 class OwnerProvider extends ChangeNotifier {
-  Owner owners = Owner();
+  OwnerResponse owners = OwnerResponse();
   late ApiService apiService;
   late AuthProvider authProvider;
 
@@ -31,18 +31,18 @@ class OwnerProvider extends ChangeNotifier {
   //   }
   // }
 
-  // Future updateOwner(Owner owner) async {
-  //   try {
-  //     Owner updatedOwner = await apiService.updateOwner(owner);
-  //     int index = owners.indexOf(owner);
+  Future updateOwner(OwnerData owner) async {
+    try {
+      OwnerData updatedOwner = await apiService.updateOwner(owner);
+      int? index = owners.data!.indexOf(owner);
 
-  //     owners[index] = updatedOwner;
+      owners.data![index] = updatedOwner;
 
-  //     notifyListeners();
-  //   } catch (Exception) {
-  //     print(Exception);
-  //   }
-  // }
+      notifyListeners();
+    } catch (Exception) {
+      print(Exception);
+    }
+  }
 
   // Future deleteOwner(Owner owner) async {
   //   try {

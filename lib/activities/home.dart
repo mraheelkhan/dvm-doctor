@@ -1,5 +1,5 @@
 import 'package:dvm_doctor/activities/transactions.dart';
-import 'package:dvm_doctor/models/Owner.dart';
+import 'package:dvm_doctor/models/OwnerResponse.dart';
 import 'package:flutter/material.dart';
 import 'package:dvm_doctor/activities/owners.dart';
 import 'package:dvm_doctor/providers/AuthProvider.dart';

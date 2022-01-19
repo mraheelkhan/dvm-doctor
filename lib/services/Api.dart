@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:dvm_doctor/models/Owner.dart';
+import 'package:dvm_doctor/models/OwnerResponse.dart';
 import 'package:http/http.dart' as http;
 
 class ApiService {
@@ -13,10 +13,10 @@ class ApiService {
 
   final String baseUrl =
       // 'http://192.168.10.17/Laravel-Flutter-Course-API/public/api/';
-      'http://62f2-111-119-177-24.ngrok.io/api/';
+      'http://9a44-111-119-177-39.ngrok.io/api/';
 
-  Future<Owner> fetchOwners() async {
-    Owner _owner;
+  Future<OwnerResponse> fetchOwners() async {
+    OwnerResponse _owner;
     http.Response response = await http.get(
       Uri.parse(baseUrl + 'owners'),
       headers: {
@@ -29,14 +29,14 @@ class ApiService {
     var owner = jsonDecode(response.body);
     // Owner owner = new Owner.fromJson(jsonResponse);
 
-    _owner = Owner.fromJson(owner);
+    _owner = OwnerResponse.fromJson(owner);
     return _owner;
     // return owner.fromJson(owner);
     // return ;
     // return owner.map<Owner>((json) => Owner.fromMap(json));
   }
 
-  Future<Owner> addOwner(String name) async {
+  Future<OwnerResponse> addOwner(String name) async {
     String uri = baseUrl + 'owners';
 
     http.Response response = await http.post(Uri.parse(uri),
@@ -50,26 +50,30 @@ class ApiService {
       throw Exception('Something went wrong while create! Error code: ' +
           response.statusCode.toString());
     }
-    return Owner.fromJson(jsonDecode(response.body));
+    return OwnerResponse.fromJson(jsonDecode(response.body));
   }
 
-  // Future<Owner> updateOwner(Owner owner) async {
-  //   String uri = baseUrl + 'owners/' + owner.id.toString();
+  Future<OwnerData> updateOwner(OwnerData owner) async {
+    String uri = baseUrl + 'owners/' + owner.id.toString();
 
-  //   http.Response response = await http.put(Uri.parse(uri),
-  //       headers: {
-  //         HttpHeaders.contentTypeHeader: 'application/json',
-  //         HttpHeaders.acceptHeader: 'application/json',
-  //         HttpHeaders.authorizationHeader: 'Bearer $token'
-  //       },
-  //       body: jsonEncode({'name': owner.name}));
+    http.Response response = await http.put(Uri.parse(uri),
+        headers: {
+          HttpHeaders.contentTypeHeader: 'application/json',
+          HttpHeaders.acceptHeader: 'application/json',
+          HttpHeaders.authorizationHeader: 'Bearer $token'
+        },
+        body: jsonEncode({
+          'name': owner.name,
+          'address': owner.address,
+          'phone': owner.phone
+        }));
 
-  //   if (response.statusCode != 200) {
-  //     throw Exception('Something went wrong! Error code: ' +
-  //         response.statusCode.toString());
-  //   }
-  //   return Owner.fromJson(jsonDecode(response.body));
-  // }
+    if (response.statusCode != 200) {
+      throw Exception('Something went wrong! Error code: ' +
+          response.statusCode.toString());
+    }
+    return OwnerData.fromJson(jsonDecode(response.body));
+  }
 
   // Future<void> deleteOwner(int id) async {
   //   String uri = baseUrl + 'owners/' + id.toString();
