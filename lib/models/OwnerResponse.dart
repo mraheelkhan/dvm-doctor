@@ -15,13 +15,13 @@ class OwnerResponse {
 }
 
 class OwnerData {
-  int id;
+  int? id;
   String name;
   String phone;
   String address;
 
   OwnerData(
-      {required this.id,
+      {this.id,
       required this.name,
       required this.address,
       required this.phone});
@@ -32,5 +32,19 @@ class OwnerData {
         name: json['name'],
         address: json['address'],
         phone: json['phone']);
+  }
+}
+
+class OwnerCreateResponse {
+  int? status;
+  String? message;
+  OwnerData? data;
+
+  OwnerCreateResponse({this.status, this.data, this.message});
+
+  factory OwnerCreateResponse.fromJson(Map<String, dynamic> json) {
+    var dataList = OwnerData.fromJson(json['data']);
+    return OwnerCreateResponse(
+        status: json['status'], data: dataList, message: json['message']);
   }
 }

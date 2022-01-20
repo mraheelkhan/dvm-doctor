@@ -71,12 +71,12 @@ class _OwnersState extends State<Owners> {
       )),
       floatingActionButton: new FloatingActionButton(
           onPressed: () {
-            // showModalBottomSheet(
-            //     context: context,
-            //     isScrollControlled: true,
-            //     builder: (context) {
-            //       return OwnerAdd(provider.addOwner);
-            //     });
+            showModalBottomSheet(
+                context: context,
+                isScrollControlled: true,
+                builder: (context) {
+                  return OwnerAdd(provider.addOwner);
+                });
           },
           child: Icon(Icons.add)),
     );

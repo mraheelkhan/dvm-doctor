@@ -1,3 +1,4 @@
+import 'package:dvm_doctor/models/OwnerResponse.dart';
 import 'package:flutter/material.dart';
 
 class OwnerAdd extends StatefulWidget {
@@ -11,6 +12,9 @@ class OwnerAdd extends StatefulWidget {
 class _OwnerAddState extends State<OwnerAdd> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final ownerNameController = TextEditingController();
+  final ownerAddressController = TextEditingController();
+  final ownerPhoneController = TextEditingController();
+
   String errorMessage = '';
   Future addOwner() async {
     final form = _formKey.currentState;
@@ -18,8 +22,11 @@ class _OwnerAddState extends State<OwnerAdd> {
     if (!form!.validate()) {
       return;
     }
-
-    await widget.ownerCallback(ownerNameController.text);
+    OwnerData ownerData = OwnerData(
+        name: ownerNameController.text,
+        address: ownerAddressController.text,
+        phone: ownerPhoneController.text);
+    await widget.ownerCallback(ownerData);
 
     Navigator.pop(context);
   }
@@ -52,6 +59,50 @@ class _OwnerAddState extends State<OwnerAdd> {
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Owner Name',
+                    ),
+                  ),
+                  Padding(padding: EdgeInsets.only(top: 20)),
+                  TextFormField(
+                    onChanged: (value) => setState(() {
+                      errorMessage = '';
+                    }),
+                    controller: ownerAddressController,
+                    //initialValue:
+                    //    category.name,
+                    validator: (String? value) {
+                      if (value!.isEmpty) {
+                        return 'Enter owner address';
+                      }
+                      if (value.length <= 5) {
+                        return 'Owner address should be greater than 5 letters.';
+                      }
+                      return null;
+                    },
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Owner Address',
+                    ),
+                  ),
+                  Padding(padding: EdgeInsets.only(top: 20)),
+                  TextFormField(
+                    onChanged: (value) => setState(() {
+                      errorMessage = '';
+                    }),
+                    controller: ownerPhoneController,
+                    //initialValue:
+                    //    category.name,
+                    validator: (String? value) {
+                      if (value!.isEmpty) {
+                        return 'Enter owner phone';
+                      }
+                      if (value.length <= 7) {
+                        return 'Owner phone number should be greater than 7 letters.';
+                      }
+                      return null;
+                    },
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Owner Phone',
                     ),
                   ),
                   Padding(

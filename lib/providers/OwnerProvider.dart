@@ -20,16 +20,17 @@ class OwnerProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Future addOwner(String name) async {
-  //   try {
-  //     Owner addOwner = await apiService.addOwner(name);
-  //     owners.add(addOwner);
+  Future addOwner(OwnerData owner) async {
+    try {
+      OwnerCreateResponse addOwner = await apiService.addOwner(owner);
+      owners.data?.add(addOwner.data!);
+      // owners.add(addOwner);
 
-  //     notifyListeners();
-  //   } catch (Exception) {
-  //     print(Exception);
-  //   }
-  // }
+      notifyListeners();
+    } catch (Exception) {
+      print(Exception);
+    }
+  }
 
   Future updateOwner(OwnerData owner) async {
     try {

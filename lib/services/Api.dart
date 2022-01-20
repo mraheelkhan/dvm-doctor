@@ -13,7 +13,7 @@ class ApiService {
 
   final String baseUrl =
       // 'http://192.168.10.17/Laravel-Flutter-Course-API/public/api/';
-      'http://9a44-111-119-177-39.ngrok.io/api/';
+      'http://6e9c-111-119-178-158.ngrok.io/api/';
 
   Future<OwnerResponse> fetchOwners() async {
     OwnerResponse _owner;
@@ -36,7 +36,7 @@ class ApiService {
     // return owner.map<Owner>((json) => Owner.fromMap(json));
   }
 
-  Future<OwnerResponse> addOwner(String name) async {
+  Future<OwnerCreateResponse> addOwner(OwnerData owner) async {
     String uri = baseUrl + 'owners';
 
     http.Response response = await http.post(Uri.parse(uri),
@@ -45,12 +45,18 @@ class ApiService {
           HttpHeaders.acceptHeader: 'application/json',
           HttpHeaders.authorizationHeader: 'Bearer $token'
         },
-        body: jsonEncode({'name': name}));
+        body: jsonEncode({
+          'name': owner.name,
+          'address': owner.address,
+          'phone': owner.phone
+        }));
     if (response.statusCode != 201) {
       throw Exception('Something went wrong while create! Error code: ' +
-          response.statusCode.toString());
+          response.statusCode.toString() +
+          ' ' +
+          response.body);
     }
-    return OwnerResponse.fromJson(jsonDecode(response.body));
+    return OwnerCreateResponse.fromJson(jsonDecode(response.body));
   }
 
   Future<OwnerData> updateOwner(OwnerData owner) async {
