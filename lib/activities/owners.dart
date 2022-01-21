@@ -53,7 +53,28 @@ class _OwnersState extends State<Owners> {
                                 size: 24.0,
                               )),
                           IconButton(
-                              onPressed: null,
+                              onPressed: () {
+                                showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return AlertDialog(
+                                        title: Text('Confirmation'),
+                                        content: Text('Do you want to delete?'),
+                                        actions: [
+                                          TextButton(
+                                              onPressed: () => deleteOwner(
+                                                  provider.deleteOwner,
+                                                  owner,
+                                                  context),
+                                              child: Text('Delete')),
+                                          TextButton(
+                                              onPressed: () =>
+                                                  Navigator.pop(context),
+                                              child: Text('Cancel')),
+                                        ],
+                                      );
+                                    });
+                              },
                               icon: Icon(
                                 Icons.delete,
                                 color: Colors.red,
@@ -82,7 +103,7 @@ class _OwnersState extends State<Owners> {
     );
   }
 
-  Future deleteCategory(Function callback, OwnerResponse owner) async {
+  Future deleteOwner(Function callback, OwnerData owner, context) async {
     await callback(owner);
     Navigator.pop(context);
   }

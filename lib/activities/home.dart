@@ -17,7 +17,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Welcome to Flutter',
+      title: 'Welcome to DVM Dashboard',
       home: Scaffold(
         body: widgetOptions.elementAt(selectedIndex),
         bottomNavigationBar: BottomAppBar(

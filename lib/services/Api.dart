@@ -13,7 +13,7 @@ class ApiService {
 
   final String baseUrl =
       // 'http://192.168.10.17/Laravel-Flutter-Course-API/public/api/';
-      'http://6e9c-111-119-178-158.ngrok.io/api/';
+      'https://529e-103-255-7-23.ngrok.io/api/';
 
   Future<OwnerResponse> fetchOwners() async {
     OwnerResponse _owner;
@@ -81,22 +81,22 @@ class ApiService {
     return OwnerData.fromJson(jsonDecode(response.body));
   }
 
-  // Future<void> deleteOwner(int id) async {
-  //   String uri = baseUrl + 'owners/' + id.toString();
+  Future<void> deleteOwner(int id) async {
+    String uri = baseUrl + 'owners/' + id.toString();
 
-  //   http.Response response = await http.delete(
-  //     Uri.parse(uri),
-  //     headers: {
-  //       HttpHeaders.contentTypeHeader: 'application/json',
-  //       HttpHeaders.acceptHeader: 'application/json',
-  //       HttpHeaders.authorizationHeader: 'Bearer $token'
-  //     },
-  //   );
-  //   if (response.statusCode != 204) {
-  //     throw Exception('Something went wrong while deleting! Error code: ' +
-  //         response.statusCode.toString());
-  //   }
-  // }
+    http.Response response = await http.delete(
+      Uri.parse(uri),
+      headers: {
+        HttpHeaders.contentTypeHeader: 'application/json',
+        HttpHeaders.acceptHeader: 'application/json',
+        HttpHeaders.authorizationHeader: 'Bearer $token'
+      },
+    );
+    if (response.statusCode != 200) {
+      throw Exception('Something went wrong while deleting! Error code: ' +
+          response.statusCode.toString());
+    }
+  }
 
   Future<String> register(String name, String email, String password,
       String confirmPassword, String deviceName) async {

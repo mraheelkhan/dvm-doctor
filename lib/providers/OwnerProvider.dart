@@ -45,14 +45,21 @@ class OwnerProvider extends ChangeNotifier {
     }
   }
 
-  // Future deleteOwner(Owner owner) async {
-  //   try {
-  //     await apiService.deleteOwner(owner.id);
-  //     owners.remove(owner);
+  Future deleteOwner(OwnerData owner) async {
+    try {
+      await apiService.deleteOwner(owner.id!.toInt());
+      // print(owner.toString());
+      print(owners.data!.indexOf(owner));
+      print("after");
+      print(owners.data);
+      print(owners.data!.remove(owner));
+      print("after");
+      print(owners.data);
+      // owners.data!.remove(owner);
 
-  //     notifyListeners();
-  //   } catch (Exception) {
-  //     print(Exception);
-  //   }
-  // }
+      notifyListeners();
+    } catch (Exception) {
+      print(Exception);
+    }
+  }
 }
