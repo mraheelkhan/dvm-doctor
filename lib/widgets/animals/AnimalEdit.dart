@@ -17,6 +17,7 @@ class AnimalEdit extends StatefulWidget {
 class _AnimalEditState extends State<AnimalEdit> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final animalNameController = TextEditingController();
+  bool isUpdateBtnClicked = false;
   ApiService apiService = ApiService('');
   String errorMessage = '';
 
@@ -36,6 +37,9 @@ class _AnimalEditState extends State<AnimalEdit> {
     widget.animal.animal_name = animalNameController.text;
 
     await widget.ownerCallback(widget.animal);
+    setState(() {
+      isUpdateBtnClicked = false;
+    });
     Navigator.pop(context);
   }
 
@@ -53,33 +57,45 @@ class _AnimalEditState extends State<AnimalEdit> {
                       errorMessage = '';
                     }),
                     controller: animalNameController,
-                    //initialValue:
-                    //    category.name,
                     validator: (String? value) {
                       if (value!.isEmpty) {
                         return 'Enter animal name';
                       }
-                      if (value.length <= 3) {
+                      if (value.length < 3) {
                         return 'Animal name should be greater than 3 letters.';
                       }
                       return null;
                     },
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Animal Name',
                     ),
                   ),
                   Padding(
-                      padding: EdgeInsets.only(top: 20),
+                      padding: const EdgeInsets.only(top: 20),
                       child: ElevatedButton(
                           onPressed: () {
+                            setState(() {
+                              isUpdateBtnClicked = true;
+                            });
                             saveCategory();
                           },
-                          child: Text('Save'))),
+                          child: const Text('Update'))),
                   TextButton(
                       onPressed: () => Navigator.pop(context),
-                      child: Text('Close')),
-                  Text(errorMessage, style: TextStyle(color: Colors.red))
+                      child: const Text('Close')),
+                  Text(errorMessage, style: const TextStyle(color: Colors.red)),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 20),
+                    child: () {
+                      if (isUpdateBtnClicked) {
+                        return const CircularProgressIndicator(
+                          valueColor:
+                              AlwaysStoppedAnimation<Color>(Colors.black),
+                        );
+                      }
+                    }(),
+                  )
                 ],
               ))),
     );

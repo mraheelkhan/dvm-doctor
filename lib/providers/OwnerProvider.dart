@@ -17,7 +17,6 @@ class OwnerProvider extends ChangeNotifier {
 
   Future init() async {
     owners = await apiService.fetchOwners();
-    print(owners);
     notifyListeners();
   }
 

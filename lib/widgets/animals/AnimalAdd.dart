@@ -1,32 +1,30 @@
+import 'package:dvm_doctor/models/AnimalResponse.dart';
 import 'package:dvm_doctor/models/OwnerResponse.dart';
 import 'package:flutter/material.dart';
 
-class OwnerAdd extends StatefulWidget {
-  final Function ownerCallback;
-  OwnerAdd(this.ownerCallback, {Key? key}) : super(key: key);
+class AnimalAdd extends StatefulWidget {
+  final Function animalCallback;
+  AnimalAdd(this.animalCallback, {Key? key}) : super(key: key);
 
   @override
-  _OwnerAddState createState() => _OwnerAddState();
+  _AnimalAddState createState() => _AnimalAddState();
 }
 
-class _OwnerAddState extends State<OwnerAdd> {
+class _AnimalAddState extends State<AnimalAdd> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final ownerNameController = TextEditingController();
-  final ownerAddressController = TextEditingController();
-  final ownerPhoneController = TextEditingController();
+  final animalNameController = TextEditingController();
 
   String errorMessage = '';
-  Future addOwner() async {
+  Future addAnimal() async {
     final form = _formKey.currentState;
 
     if (!form!.validate()) {
       return;
     }
-    OwnerData ownerData = OwnerData(
-        name: ownerNameController.text,
-        address: ownerAddressController.text,
-        phone: ownerPhoneController.text);
-    await widget.ownerCallback(ownerData);
+    AnimalData animalData = AnimalData(
+      animal_name: animalNameController.text,
+    );
+    await widget.animalCallback(animalData);
 
     Navigator.pop(context);
   }
@@ -44,72 +42,26 @@ class _OwnerAddState extends State<OwnerAdd> {
                     onChanged: (value) => setState(() {
                       errorMessage = '';
                     }),
-                    controller: ownerNameController,
-                    //initialValue:
-                    //    category.name,
+                    controller: animalNameController,
                     validator: (String? value) {
                       if (value!.isEmpty) {
-                        return 'Enter owner Name';
+                        return 'Enter animal Name';
                       }
-                      if (value.length <= 3) {
-                        return 'Owner name should be greater than 3 letters.';
+                      if (value.length < 3) {
+                        return 'Animal name should be greater than 3 letters.';
                       }
                       return null;
                     },
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       border: OutlineInputBorder(),
-                      labelText: 'Owner Name',
-                    ),
-                  ),
-                  Padding(padding: EdgeInsets.only(top: 20)),
-                  TextFormField(
-                    onChanged: (value) => setState(() {
-                      errorMessage = '';
-                    }),
-                    controller: ownerAddressController,
-                    //initialValue:
-                    //    category.name,
-                    validator: (String? value) {
-                      if (value!.isEmpty) {
-                        return 'Enter owner address';
-                      }
-                      if (value.length <= 5) {
-                        return 'Owner address should be greater than 5 letters.';
-                      }
-                      return null;
-                    },
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Owner Address',
-                    ),
-                  ),
-                  Padding(padding: EdgeInsets.only(top: 20)),
-                  TextFormField(
-                    onChanged: (value) => setState(() {
-                      errorMessage = '';
-                    }),
-                    controller: ownerPhoneController,
-                    //initialValue:
-                    //    category.name,
-                    validator: (String? value) {
-                      if (value!.isEmpty) {
-                        return 'Enter owner phone';
-                      }
-                      if (value.length <= 7) {
-                        return 'Owner phone number should be greater than 7 letters.';
-                      }
-                      return null;
-                    },
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Owner Phone',
+                      labelText: 'Animal Name',
                     ),
                   ),
                   Padding(
                       padding: EdgeInsets.only(top: 20),
                       child: ElevatedButton(
                           onPressed: () {
-                            addOwner();
+                            addAnimal();
                           },
                           child: Text('Save'))),
                   TextButton(

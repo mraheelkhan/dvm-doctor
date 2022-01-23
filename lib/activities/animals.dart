@@ -1,6 +1,7 @@
 import 'package:dvm_doctor/models/AnimalResponse.dart';
 import 'package:dvm_doctor/providers/AnimalProvider.dart';
 import 'package:dvm_doctor/widgets/animals/AnimalEdit.dart';
+import 'package:dvm_doctor/widgets/animals/AnimalAdd.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
@@ -74,7 +75,7 @@ class _AnimalsState extends State<Animals> {
                                       );
                                     });
                               },
-                              icon: Icon(
+                              icon: const Icon(
                                 Icons.delete,
                                 color: Colors.red,
                                 size: 24.0,
@@ -83,22 +84,22 @@ class _AnimalsState extends State<Animals> {
                       ));
                 });
           } else {
-            return CircularProgressIndicator(
+            return const CircularProgressIndicator(
               valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
             );
           }
         }(),
       )),
-      floatingActionButton: new FloatingActionButton(
+      floatingActionButton: FloatingActionButton(
           onPressed: () {
-            // showModalBottomSheet(
-            //     context: context,
-            //     isScrollControlled: true,
-            //     builder: (context) {
-            //       return OwnerAdd(provider.addOwner);
-            //     });
+            showModalBottomSheet(
+                context: context,
+                isScrollControlled: true,
+                builder: (context) {
+                  return AnimalAdd(provider.addAnimal);
+                });
           },
-          child: Icon(Icons.add)),
+          child: const Icon(Icons.add)),
     );
   }
 

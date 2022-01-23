@@ -20,6 +20,7 @@ class _OwnerEditState extends State<OwnerEdit> {
   final ownerNameController = TextEditingController();
   final ownerAddressController = TextEditingController();
   final ownerPhoneController = TextEditingController();
+  bool isUpdateBtnClicked = false;
   ApiService apiService = ApiService('');
   String errorMessage = '';
 
@@ -43,6 +44,9 @@ class _OwnerEditState extends State<OwnerEdit> {
     widget.owner.phone = ownerPhoneController.text;
 
     await widget.ownerCallback(widget.owner);
+    setState(() {
+      isUpdateBtnClicked = false;
+    });
     Navigator.pop(context);
   }
 
@@ -124,13 +128,27 @@ class _OwnerEditState extends State<OwnerEdit> {
                       padding: EdgeInsets.only(top: 20),
                       child: ElevatedButton(
                           onPressed: () {
+                            setState(() {
+                              isUpdateBtnClicked = true;
+                            });
                             saveCategory();
                           },
                           child: Text('Save'))),
                   TextButton(
                       onPressed: () => Navigator.pop(context),
                       child: Text('Close')),
-                  Text(errorMessage, style: TextStyle(color: Colors.red))
+                  Text(errorMessage, style: TextStyle(color: Colors.red)),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 20),
+                    child: () {
+                      if (isUpdateBtnClicked) {
+                        return const CircularProgressIndicator(
+                          valueColor:
+                              AlwaysStoppedAnimation<Color>(Colors.black),
+                        );
+                      }
+                    }(),
+                  )
                 ],
               ))),
     );
