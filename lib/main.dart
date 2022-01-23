@@ -1,3 +1,7 @@
+import 'package:dvm_doctor/activities/TestPage.dart';
+import 'package:dvm_doctor/activities/animals.dart';
+import 'package:dvm_doctor/activities/dashboard.dart';
+import 'package:dvm_doctor/providers/AnimalProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:dvm_doctor/providers/AuthProvider.dart';
 import 'package:dvm_doctor/providers/OwnerProvider.dart';
@@ -18,22 +22,30 @@ class MyApp extends StatelessWidget {
           return MultiProvider(
               providers: [
                 ChangeNotifierProvider<OwnerProvider>(
-                    create: (context) => OwnerProvider(authProvider))
+                    create: (context) => OwnerProvider(authProvider)),
+                ChangeNotifierProvider<AnimalProvider>(
+                    create: (context) => AnimalProvider(authProvider))
               ],
-              child: MaterialApp(title: 'Welcome to DVM', routes: {
-                '/': (context) {
-                  final authProvider = Provider.of<AuthProvider>(context);
-                  if (authProvider.isAuthenticated) {
-                    return Home();
-                  } else {
-                    return Login();
-                  }
-                },
-                '/login': (context) => Login(),
-                '/register': (context) => Register(),
-                '/home': (context) => Home(),
-                '/owners': (context) => Owners(),
-              }));
+              child: MaterialApp(
+                  title: 'Welcome to DVM',
+                  initialRoute: '/',
+                  routes: {
+                    '/': (context) {
+                      final authProvider = Provider.of<AuthProvider>(context);
+                      if (authProvider.isAuthenticated) {
+                        return Home();
+                      } else {
+                        return Login();
+                      }
+                    },
+                    '/login': (context) => Login(),
+                    '/register': (context) => Register(),
+                    '/home': (context) => Home(),
+                    '/owners': (context) => Owners(),
+                    '/animals': (context) => Animals(),
+                    '/testPage': (context) => TestPage(),
+                    '/dashboard': (context) => Dashboard(),
+                  }));
         }));
   }
 }

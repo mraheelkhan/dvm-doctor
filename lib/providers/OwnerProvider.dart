@@ -17,6 +17,7 @@ class OwnerProvider extends ChangeNotifier {
 
   Future init() async {
     owners = await apiService.fetchOwners();
+    print(owners);
     notifyListeners();
   }
 
@@ -48,14 +49,7 @@ class OwnerProvider extends ChangeNotifier {
   Future deleteOwner(OwnerData owner) async {
     try {
       await apiService.deleteOwner(owner.id!.toInt());
-      // print(owner.toString());
-      print(owners.data!.indexOf(owner));
-      print("after");
-      print(owners.data);
       print(owners.data!.remove(owner));
-      print("after");
-      print(owners.data);
-      // owners.data!.remove(owner);
 
       notifyListeners();
     } catch (Exception) {

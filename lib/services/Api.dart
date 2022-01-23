@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:dvm_doctor/models/AnimalResponse.dart';
 import 'package:dvm_doctor/models/OwnerResponse.dart';
 import 'package:http/http.dart' as http;
 
@@ -13,8 +14,9 @@ class ApiService {
 
   final String baseUrl =
       // 'http://192.168.10.17/Laravel-Flutter-Course-API/public/api/';
-      'https://529e-103-255-7-23.ngrok.io/api/';
+      'http://db3d-111-119-177-41.ngrok.io/api/';
 
+  /* ##### Model Owner #### */
   Future<OwnerResponse> fetchOwners() async {
     OwnerResponse _owner;
     http.Response response = await http.get(
@@ -25,15 +27,11 @@ class ApiService {
         HttpHeaders.authorizationHeader: 'Bearer $token'
       },
     );
-    // final jsonResponse = jsonDecode(response.body);
+
     var owner = jsonDecode(response.body);
-    // Owner owner = new Owner.fromJson(jsonResponse);
 
     _owner = OwnerResponse.fromJson(owner);
     return _owner;
-    // return owner.fromJson(owner);
-    // return ;
-    // return owner.map<Owner>((json) => Owner.fromMap(json));
   }
 
   Future<OwnerCreateResponse> addOwner(OwnerData owner) async {
@@ -92,12 +90,90 @@ class ApiService {
         HttpHeaders.authorizationHeader: 'Bearer $token'
       },
     );
-    if (response.statusCode != 200) {
+    if (response.statusCode != 204) {
       throw Exception('Something went wrong while deleting! Error code: ' +
           response.statusCode.toString());
     }
   }
 
+  /// #### Model Animal ####
+
+  Future<AnimalResponse> fetchAnimals() async {
+    AnimalResponse _animal;
+    http.Response response = await http.get(
+      Uri.parse(baseUrl + 'animals'),
+      headers: {
+        HttpHeaders.contentTypeHeader: 'application/json',
+        HttpHeaders.acceptHeader: 'application/json',
+        HttpHeaders.authorizationHeader: 'Bearer $token'
+      },
+    );
+
+    var owner = jsonDecode(response.body);
+
+    _animal = AnimalResponse.fromJson(owner);
+    return _animal;
+  }
+
+  Future<AnimalCreateResponse> addAnimal(AnimalData animal) async {
+    String uri = baseUrl + 'animals';
+
+    http.Response response = await http.post(Uri.parse(uri),
+        headers: {
+          HttpHeaders.contentTypeHeader: 'application/json',
+          HttpHeaders.acceptHeader: 'application/json',
+          HttpHeaders.authorizationHeader: 'Bearer $token'
+        },
+        body: jsonEncode({
+          'animal_name': animal.animal_name,
+        }));
+    if (response.statusCode != 201) {
+      throw Exception('Something went wrong while create! Error code: ' +
+          response.statusCode.toString() +
+          ' ' +
+          response.body);
+    }
+    return AnimalCreateResponse.fromJson(jsonDecode(response.body));
+  }
+
+  Future<AnimalData> updateAnimal(AnimalData animal) async {
+    String uri = baseUrl + 'animals/' + animal.id.toString();
+
+    http.Response response = await http.put(Uri.parse(uri),
+        headers: {
+          HttpHeaders.contentTypeHeader: 'application/json',
+          HttpHeaders.acceptHeader: 'application/json',
+          HttpHeaders.authorizationHeader: 'Bearer $token'
+        },
+        body: jsonEncode({
+          'animal_name': animal.animal_name,
+        }));
+
+    if (response.statusCode != 200) {
+      throw Exception('Something went wrong! Error code: ' +
+          response.statusCode.toString());
+    }
+    return AnimalData.fromJson(jsonDecode(response.body));
+  }
+
+  Future<void> deleteAnimal(int id) async {
+    String uri = baseUrl + 'animals/' + id.toString();
+
+    http.Response response = await http.delete(
+      Uri.parse(uri),
+      headers: {
+        HttpHeaders.contentTypeHeader: 'application/json',
+        HttpHeaders.acceptHeader: 'application/json',
+        HttpHeaders.authorizationHeader: 'Bearer $token'
+      },
+    );
+    if (response.statusCode != 204) {
+      throw Exception('Something went wrong while deleting! Error code: ' +
+          response.statusCode.toString());
+    }
+  }
+
+  /// #### Register and Login ####
   Future<String> register(String name, String email, String password,
       String confirmPassword, String deviceName) async {
     String uri = baseUrl + 'auth/register';
