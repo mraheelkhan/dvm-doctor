@@ -24,7 +24,6 @@ class AnimalProvider extends ChangeNotifier {
     try {
       AnimalCreateResponse addAnimal = await apiService.addAnimal(animal);
       animals.data?.add(addAnimal.data!);
-      // owners.add(addOwner);
 
       notifyListeners();
     } catch (Exception) {
@@ -48,7 +47,7 @@ class AnimalProvider extends ChangeNotifier {
   Future deleteAnimal(AnimalData animal) async {
     try {
       await apiService.deleteAnimal(animal.id!.toInt());
-      print(animals.data!.remove(animal));
+      animals.data!.remove(animal);
 
       notifyListeners();
     } catch (Exception) {

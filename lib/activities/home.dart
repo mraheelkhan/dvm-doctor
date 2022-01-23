@@ -23,7 +23,7 @@ class _HomeState extends State<Home> {
       home: Scaffold(
         body: widgetOptions.elementAt(selectedIndex),
         bottomNavigationBar: BottomAppBar(
-          shape: CircularNotchedRectangle(),
+          shape: const CircularNotchedRectangle(),
           notchMargin: 4,
           child: BottomNavigationBar(
             backgroundColor: Color(0xff3700b3),
@@ -53,7 +53,7 @@ class _HomeState extends State<Home> {
   }
 
   void onItemTapped(int index) {
-    if (index == 20) {
+    if (index == 2) {
       AuthProvider authProvider =
           Provider.of<AuthProvider>(context, listen: false);
       authProvider.logOut();
